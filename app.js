@@ -1,31 +1,25 @@
 const express = require('express');
-const ejs = require('ejs');
 
 const app = express();
 const PORT = 3000;
 
-
-//setting our view engine
-app.set('view engine', 'ejs');
-app.set('views', './views');
-
-//route controller with a path paremeter
-app.get('/users/:id', (req, res) => {
-    const userId = req.params.id;
-    res.send(`User with ID ${userId}`);
+//Middleware
+app.use((req, res,next)=>{
+    req.timestamp = new Date();
+    next();
 });
 
+
+
+//Router controller
 app.get('/', (req, res) =>{
 
-    const data = {
-        title: 'Hello, World!',
-        message: 'Welcome to my website!'
-    }
-
-   res.render('index', {data});
+    const time = req.timestamp;
+    res.send(`The current time is: ${time}`);
 
 });
 
 app.listen(PORT, () => {
-    console.log(`Server stard on port ${PORT}`);
+
+    console.log(`Server started on port ${PORT}`);
 });
